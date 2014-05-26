@@ -24,8 +24,8 @@ void setup() {
 	attractorList = configureAttractorList(cp5.addDropdownList("attractorList"), mainAttractorManager.getAvailableAttractors());
 
 	// optional initial attractor
-	mainAttractorManager.setupAttractor(1);
-	attractorList.setIndex(1);
+	mainAttractorManager.setupAttractor(2);
+	attractorList.setIndex(2);
 }
 
 boolean sketchFullScreen() {

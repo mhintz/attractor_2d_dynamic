@@ -1,21 +1,5 @@
 class MathUtil {
 	// utils
-	float flSin(float n) {
-		return (float) Math.sin(n);
-	}
-
-	float flCos(float n) {
-		return (float) Math.cos(n);
-	}
-
-	float flSq(float n) {
-		return (float) Math.pow(n, 2);
-	}
-
-	float flCu(float n) {
-		return (float) Math.pow(n, 3);
-	}
-
 	void calcVecMax(PVector store, PVector pt) {
 		store.x = Math.max(store.x, pt.x);
 		store.y = Math.max(store.y, pt.y);

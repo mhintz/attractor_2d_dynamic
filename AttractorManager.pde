@@ -17,9 +17,7 @@ class AttractorManager {
 	}
 
 	void updateAttractorParam(int paramNum, float inc) {
-		boolean resetParams = mainAttractor.updateParam(paramNum, inc);
-		// genNewParams should return true if new params are generated
-		if (resetParams) mainAttractor.genPts();
+		mainAttractor.updateParam(paramNum, inc);
 	}
 
 	void saveFrame() {
@@ -31,7 +29,8 @@ class AttractorManager {
 		switch (index) {
 			case 0: newAtrctr = new CliffordAttractor(); break;
 			case 1: newAtrctr = new PeterDeJongAttractor(); break;
-			case 2: newAtrctr = new PickoverAttractor(); break;
+			case 2: newAtrctr = new PhillipHamAttractor(); break;
+			case 3: newAtrctr = new PickoverAttractor(); break;
 			default: newAtrctr = new Attractor(); break;
 		}
 		return newAtrctr;
@@ -41,5 +40,5 @@ class AttractorManager {
 		return attractorNames;
 	}
 
-	String[] attractorNames = { "Clifford", "Peter De Jong", "Pickover" };
+	String[] attractorNames = { "Clifford", "Peter De Jong", "Phillip Ham", "Pickover" };
 }

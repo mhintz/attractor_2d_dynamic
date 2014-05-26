@@ -99,8 +99,6 @@ class Attractor {
 	}
 
 	/* default parameter update does nothing */
-	boolean updateParam(int paramNum, float inc) {
-		return false;
-	}
+	void updateParam(int paramNum, float inc) { }
 
 }

@@ -16,8 +16,8 @@ class CliffordAttractor extends Attractor {
 	}
 
 	PVector getNext() {
-		float x = util.flSin(pA * lastPt.y) + pC * util.flCos(pA * lastPt.x);
-		float y = util.flSin(pB * lastPt.x) + pD * util.flCos(pB * lastPt.y);
+		float x = sin(pA * lastPt.y) + pC * cos(pA * lastPt.x);
+		float y = sin(pB * lastPt.x) + pD * cos(pB * lastPt.y);
 		return new PVector(x, y);
 	}
 
@@ -36,12 +36,12 @@ class CliffordAttractor extends Attractor {
 		return paramsDisp;
 	}
 
-	boolean updateParam(int num, float inc) {
+	void updateParam(int num, float inc) {
 		switch (num) {
 			case 0: pA += inc; break;
 			case 1: pB += inc; break;
 		}
-		return true;
+		genPts();
 	}
 }
 
@@ -78,19 +78,66 @@ class PeterDeJongAttractor extends Attractor {
 	}
 
 	PVector getNext() {
-		float x = util.flSin(pA * lastPt.y) - util.flCos(pB * lastPt.x);
-		float y = util.flSin(pC * lastPt.x) - util.flCos(pD * lastPt.y);
+		float x = sin(pA * lastPt.y) - cos(pB * lastPt.x);
+		float y = sin(pC * lastPt.x) - cos(pD * lastPt.y);
 		return new PVector(x, y);
 	}
 
-	boolean updateParam(int num, float inc) {
+	void updateParam(int num, float inc) {
 		switch (num) {
 			case 0: pA += inc; break;
 			case 1: pB += inc; break;
 			case 2: pC += inc; break;
 			case 3: pD += inc; break;
 		}
-		return true;
+		genPts();
+	}
+}
+
+// source: http://paulbourke.net/fractals/lyapunov/ (see the contribution, at top)
+// code: http://paulbourke.net/fractals/lyapunov/attractor.basic
+class PhillipHamAttractor extends Attractor {
+	float pA = 0;
+	float pB = 0;
+	float pC = 2;
+	NoiseVector nVec;
+
+	PhillipHamAttractor() {
+		name = "Phillip Ham";
+		lastPt = new PVector(1, 1);
+		magFactor = 200;
+
+		float[][] rangesAandB = {{0, 1}, {0, 1}};
+		nVec = new NoiseVector(rangesAandB, 0.005);
+	}
+
+	void update() {
+		float[] update = nVec.getNext();
+		PVector relMouseXY = util.getRelMouseXY();
+		pA = update[0];
+		pB = update[1];
+		pC = lerp(1, 3, relMouseXY.x);
+		genPts();
+	}
+
+	PVector getNext() {
+		float x = pow(tan(lastPt.x), 2) - pow(sin(lastPt.y), 2) + pA;
+		float y = pC * tan(lastPt.x) * sin(lastPt.y) + pB;
+		return new PVector(x, y);
+	}
+
+	String[] getParamsDisplay() {
+		String[] paramsDisp = {"A: "+util.roundTo(pA, 4), "B: "+util.roundTo(pB, 4), "C: "+util.roundTo(pC, 4)};
+		return paramsDisp;
+	}
+
+	void updateParam(int num, float inc) {
+		switch (num) {
+			case 0: pA += inc; break;
+			case 1: pB += inc; break;
+			case 2: pC += inc; break;
+		}
+		genPts();
 	}
 }
 
@@ -123,9 +170,9 @@ class PickoverAttractor extends Attractor {
 	}
 
 	PVector getNext() {
-		float x = util.flSin(pA  * lastPt.y) - lastPt.z * util.flCos(pB * lastPt.x);
-		float y = lastPt.z * util.flSin(pC * lastPt.x) - util.flCos(pD * lastPt.y);
-		float z = util.flSin(lastPt.x);
+		float x = sin(pA  * lastPt.y) - lastPt.z * cos(pB * lastPt.x);
+		float y = lastPt.z * sin(pC * lastPt.x) - cos(pD * lastPt.y);
+		float z = sin(lastPt.x);
 		return new PVector(x, y, z);
 	}
 
@@ -134,13 +181,13 @@ class PickoverAttractor extends Attractor {
 		return paramsDisp;
 	}
 
-	boolean updateParam(int num, float inc) {
+	void updateParam(int num, float inc) {
 		switch (num) {
 			case 0: pA += inc; break;
 			case 1: pB += inc; break;
 			case 2: pC += inc; break;
 			case 3: pD += inc; break;
 		}
-		return true;
+		genPts();
 	}
 }
