@@ -28,9 +28,10 @@ class AttractorManager {
 		Attractor newAtrctr;
 		switch (index) {
 			case 0: newAtrctr = new CliffordAttractor(); break;
-			case 1: newAtrctr = new PeterDeJongAttractor(); break;
-			case 2: newAtrctr = new PhillipHamAttractor(); break;
-			case 3: newAtrctr = new PickoverAttractor(); break;
+			case 1: newAtrctr = new DuffingAttractor(); break;
+			case 2: newAtrctr = new PeterDeJongAttractor(); break;
+			case 3: newAtrctr = new PhillipHamAttractor(); break;
+			case 4: newAtrctr = new PickoverAttractor(); break;
 			default: newAtrctr = new Attractor(); break;
 		}
 		return newAtrctr;
@@ -40,5 +41,5 @@ class AttractorManager {
 		return attractorNames;
 	}
 
-	String[] attractorNames = { "Clifford", "Peter De Jong", "Phillip Ham", "Pickover" };
+	String[] attractorNames = { "Clifford", "Duffing", "Peter De Jong", "Phillip Ham", "Pickover" };
 }

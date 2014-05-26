@@ -45,6 +45,61 @@ class CliffordAttractor extends Attractor {
 	}
 }
 
+// source: http://paulbourke.net/fractals/duffing/
+// source: http://www.3d-meier.de/tut5a/Seite41.html
+class DuffingAttractor extends Attractor {
+	float pA = 0.25;
+	float pB = 0.3;
+	float pC = 1;
+	float sP = 0.01;
+	int time;
+	NoiseVector nVec;
+
+	DuffingAttractor() {
+		name = "Duffing";
+		lastPt = new PVector(0.1, 0.1);
+		magFactor = 1000;
+
+		time = 0;
+	}
+
+	void update() {
+		/*PVector relMouseXY = util.getRelMouseXY();
+		pA = lerp(0, 1, relMouseXY.x);
+		pB = lerp(0, 1, relMouseXY.y);
+		genPts();*/
+	}
+
+	String[] getParamsDisplay() {
+		String[] paramsDisp = {"A: "+util.roundTo(pA, 4), "B: "+util.roundTo(pB, 4), "C: "+util.roundTo(pC, 4)};
+		return paramsDisp;
+	}
+
+	void genPts() {
+		time = 0;
+		super.genPts();
+		if (Float.isNaN(pts[pts.length - 1].pos.x) || Float.isNaN(pts[pts.length - 1].pos.y)) {
+			println("genpts went infinite");
+		}
+	}
+
+	PVector getNext() {
+		float x = lastPt.x + sP * lastPt.y;
+		float y = lastPt.y + sP * lastPt.x - pow(lastPt.x, 3) - pA * lastPt.y + pB * cos(pC * time);
+		time += sP;
+		return new PVector(x, y);
+	}
+
+	void updateParam(int num, float inc) {
+		switch (num) {
+			case 0: pA += inc; break;
+			case 1: pB += inc; break;
+			case 2: pC += inc; break;
+		}
+		genPts();
+	}
+}
+
 // source: http://paulbourke.net/fractals/peterdejong/
 class PeterDeJongAttractor extends Attractor {
 	float pA = 1.4;
