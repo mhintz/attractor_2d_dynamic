@@ -38,6 +38,10 @@ class MathUtil {
 		noiseIndex += 0.1;
 		return min + (noise(noiseIndex) * (max - min));
 	}
+
+	PVector getRelMouseXY() {
+		return new PVector((float) mouseX / (float) width, (float) mouseY / (float) height);
+	}
 }
 
 class NoiseVector {

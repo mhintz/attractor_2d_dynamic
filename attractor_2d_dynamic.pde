@@ -42,7 +42,13 @@ void draw() {
 	background(0);
 	mainAttractorManager.draw();
 
-	if (frameCount % 30 == 0) println(frameRate);
+	drawFrameRate();
+}
+
+void drawFrameRate() {
+	fill(255);
+	textSize(14);
+	text(int(frameRate) + " fps", 20, height - 20);
 }
 
 class KeyManager {

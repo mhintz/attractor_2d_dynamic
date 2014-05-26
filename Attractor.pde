@@ -10,7 +10,7 @@ class AttractorPt {
 
 class Attractor {
 	String name;
-	int maxIter = 50000; // default number of iterations
+	int maxIter = 60000; // default number of iterations
 	PVector lastPt;
 
 	float magFactor = 1; // default magnification factor for points

@@ -8,7 +8,6 @@ class CliffordAttractor extends Attractor {
 
 	CliffordAttractor() {
 		name = "Clifford";
-		maxIter = 50000;
 		lastPt = new PVector(0.1, 0.1);
 		magFactor = 175;
 
@@ -24,6 +23,9 @@ class CliffordAttractor extends Attractor {
 
 	void update() {
 		float[] update = nVec.getNext();
+		PVector relMouseXY = util.getRelMouseXY();
+		pA = lerp(-5, 5, relMouseXY.x);
+		pB = lerp(-5, 5, relMouseXY.y);
 		pC = update[0];
 		pD = update[1];
 		genPts();
@@ -53,7 +55,6 @@ class PeterDeJongAttractor extends Attractor {
 
 	PeterDeJongAttractor() {
 		name = "Peter De Jong";
-		maxIter = 50000;
 		lastPt = new PVector(0.1, 0.1);
 		magFactor = 200;
 
@@ -63,8 +64,11 @@ class PeterDeJongAttractor extends Attractor {
 
 	void update() {
 		float[] update = nVec.getNext();
+		PVector relMouseXY = util.getRelMouseXY();
 		pA = update[0];
+		pB = lerp(-5, 5, relMouseXY.x);
 		pC = update[1];
+		pD = lerp(-5, 5, relMouseXY.y);
 		genPts();
 	}
 
@@ -100,7 +104,6 @@ class PickoverAttractor extends Attractor {
 
 	PickoverAttractor() {
 		name = "Pickover";
-		maxIter = 40000;
 		lastPt = new PVector(0, 0, 0);
 		magFactor = 350;
 		adjY = 250;
@@ -111,8 +114,11 @@ class PickoverAttractor extends Attractor {
 
 	void update() {
 		float[] update = nVec.getNext();
+		PVector relMouseXY = util.getRelMouseXY();
+		pA = lerp(-5, 5, relMouseXY.x);
 		pB = update[0];
 		pC = update[1];
+		pD = lerp(-5, 5, relMouseXY.y);
 		genPts();
 	}
 
