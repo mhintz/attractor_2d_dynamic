@@ -42,6 +42,13 @@ class MathUtil {
 	PVector getRelMouseXY() {
 		return new PVector((float) mouseX / (float) width, (float) mouseY / (float) height);
 	}
+
+	color colorScale0 = color(0, 100, 100);
+	color colorScale1 = color(270, 100, 100);
+
+	color getColorFromDist(float dist) {
+		return lerpColor(colorScale0, colorScale1, 1 - (dist / 3));
+	}
 }
 
 class NoiseVector {

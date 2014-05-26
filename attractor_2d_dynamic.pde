@@ -8,9 +8,11 @@ AttractorManager mainAttractorManager;
 ControlP5 cp5;
 DropdownList attractorList;
 
+int COLOR_MAX = 360;
+
 void setup() {
 	size(displayWidth, displayHeight, P3D);
-	colorMode(HSB, 360, 100, 100, 1);
+	colorMode(HSB, COLOR_MAX, 100, 100, 1);
 //	size(500, 500, P3D);
 
 	util = new MathUtil();
@@ -46,7 +48,7 @@ void draw() {
 }
 
 void drawFrameRate() {
-	fill(255);
+	fill(COLOR_MAX);
 	textSize(14);
 	text(int(frameRate) + " fps", 20, height - 20);
 }

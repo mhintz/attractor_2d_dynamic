@@ -10,18 +10,18 @@ class AttractorPt {
 
 class Attractor {
 	String name;
-	int maxIter = 60000; // default number of iterations
 	PVector lastPt;
-
 	float magFactor = 1; // default magnification factor for points
+
+	int maxIter = 60000; // default number of iterations
+
+	float centerX = width / 2;
+	float centerY = height / 2;
 	float adjX = 0;
 	float adjY = 0;
 
 	AttractorPt[] pts = {};
-	PVector minPt;
-	PVector maxPt;
 
-	float colorStep = 0.0008;
 	float ptRadius = 1;
 
 	Attractor() {
@@ -36,19 +36,15 @@ class Attractor {
 	}
 
 	void genPts() {
-//		pts = new AttractorPt[maxIter];
-//		minPt = lastPt.get();
-//		maxPt = lastPt.get();
 		AttractorPt extPt;
 		PVector newPos;
 		color newColor;
 		for (int i = 0; i < maxIter; ++i) {
 			extPt = pts[i];
 			newPos = nextPt();
-			newColor = getColor(newPos.dist(extPt.pos));
+			newColor = util.getColorFromDist(newPos.dist(extPt.pos));
 			extPt.col = newColor;
 			extPt.pos.set(newPos);
-//			setMinMax(minPt, maxPt, newPos);
 		}
 	}
 
@@ -59,15 +55,6 @@ class Attractor {
 		PVector nextPt = getNext();
 		lastPt = nextPt;
 		return nextPt;
-	}
-
-	color getColor(float dist) {
-		int deg = round(280 + (1 - dist / 3) * 360) % 360;
-		return color(deg, 100, 100, 1);
-	}
-
-	float convNoisePos(float noiseInd) {
-		return noise(noiseInd) * 255;
 	}
 
 	void setMinMax(PVector min, PVector max, PVector pt) {
@@ -81,7 +68,7 @@ class Attractor {
 	void draw() {
 		noStroke();
 		pushMatrix();
-		translate(width / 2 + adjX, height / 2 + adjY);
+		translate(centerX + adjX, centerY + adjY);
 		for (int i = 0, l = pts.length; i < l; ++i) {
 			drawPt(pts[i]);
 		}
@@ -101,7 +88,7 @@ class Attractor {
 
 	void drawParams() {
 		// add parameter labels
-		fill(255);
+		fill(COLOR_MAX);
 		textSize(14);
 		int xPos = width - 100;
 		int yOff = 20;
