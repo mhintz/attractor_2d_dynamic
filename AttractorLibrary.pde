@@ -106,6 +106,46 @@ class CliffordAttractor extends Attractor {
 	}
 }
 
+class CliffordAttractor2 extends Attractor {
+	float pA;
+	float pB;
+	float pC;
+	float pD;
+	NoiseVector nVec;
+
+	CliffordAttractor2() {
+		name = "Clifford Attractor 2";
+		magFactor = 200;
+
+		float[][] rangesABCD = {{-0.5, 1.5}, {-0.5, 1.5}};
+		nVec = new NoiseVector(rangesABCD, 0.005);
+	}
+
+	void reset() {
+		lastPt = new PVector(0.1, 0.1);
+	}
+
+	void update() {
+		float[] update = nVec.getNext();
+		PVector relMouseXY = util.getRelMouseXY();
+		pA = lerp(-3, 3, relMouseXY.x);
+		pB = update[0];
+		pC = lerp(-3, 3, relMouseXY.y);
+		pD = update[1];
+	}
+
+	PVector getNext() {
+		float x = cos(pA * lastPt.y) + pB * sin(pA * lastPt.x);
+		float y = cos(pC * lastPt.x) + pD * sin(pC * lastPt.y);
+		return new PVector(x, y);
+	}
+
+	String[] getParamsDisplay() {
+		String[] paramsDisp = {"A: "+util.roundTo(pA, 4), "B: "+util.roundTo(pB, 4), "C: "+util.roundTo(pC, 4), "D: "+util.roundTo(pD, 4)};
+		return paramsDisp;
+	}
+}
+
 // source: http://paulbourke.net/fractals/duffing/
 // source: http://www.3d-meier.de/tut5a/Seite41.html
 class DuffingAttractor extends Attractor {
