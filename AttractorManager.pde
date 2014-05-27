@@ -32,9 +32,12 @@ class AttractorManager {
 			case 0: newAtrctr = new AlteredQualiaAttractor(); break;
 			case 1: newAtrctr = new CliffordAttractor(); break;
 			case 2: newAtrctr = new DuffingAttractor(); break;
-			case 3: newAtrctr = new PeterDeJongAttractor(); break;
-			case 4: newAtrctr = new PhillipHamAttractor(); break;
-			case 5: newAtrctr = new PickoverAttractor(); break;
+			case 3: newAtrctr = new HenonAttractor(); break;
+			case 4: newAtrctr = new KingsDreamAttractor(); break;
+			case 5: newAtrctr = new PeterDeJongAttractor(); break;
+			case 6: newAtrctr = new PhillipHamAttractor(); break;
+			case 7: newAtrctr = new PickoverAttractor(); break;
+			case 8: newAtrctr = new TinkerbellAttractor(); break;
 			default: newAtrctr = new Attractor(); break;
 		}
 		return newAtrctr;
@@ -44,5 +47,5 @@ class AttractorManager {
 		return attractorNames;
 	}
 
-	String[] attractorNames = { "Altered Qualia", "Clifford", "Duffing", "Peter De Jong", "Phillip Ham", "Pickover" };
+	String[] attractorNames = { "Altered Qualia", "Clifford", "Duffing", "Henon", "King's Dream", "Peter De Jong", "Phillip Ham", "Pickover", "Tinkerbell"};
 }

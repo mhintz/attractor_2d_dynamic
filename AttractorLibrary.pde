@@ -114,7 +114,6 @@ class DuffingAttractor extends Attractor {
 	float pC = 1;
 	float sP = 0.01;
 	int time;
-	NoiseVector nVec;
 
 	DuffingAttractor() {
 		name = "Duffing";
@@ -149,6 +148,87 @@ class DuffingAttractor extends Attractor {
 			case 0: pA += inc; break;
 			case 1: pB += inc; break;
 			case 2: pC += inc; break;
+		}
+	}
+}
+
+// source: http://www.3d-meier.de/tut5/Seite9.html
+class HenonAttractor extends Attractor {
+	float pA = 1.4;
+	float pB = 0.3;
+
+	HenonAttractor() {
+		name = "Henon";
+		magFactor = 100;
+	}
+
+	void reset() {
+		lastPt = new PVector(0, 0);
+	}
+
+	void update() {
+		PVector relMouseXY = util.getRelMouseXY();
+		pA = lerp(1, 1.6, relMouseXY.x);
+		pB = lerp(0, 0.6, relMouseXY.y);
+	}
+
+	String[] getParamsDisplay() {
+		String[] paramsDisp = {"A: "+util.roundTo(pA, 4), "B: "+util.roundTo(pB, 4)};
+		return paramsDisp;
+	}
+
+	PVector getNext() {
+		float x = 1 + lastPt.y - pA * pow(lastPt.x, 2);
+		float y = pB * lastPt.x;
+		return new PVector(x, y);
+	}
+}
+
+class KingsDreamAttractor extends Attractor {
+	float pA = 1.4;
+	float pB = 1.4;
+	float pC = 1.4;
+	float pD = 1.4;
+	NoiseVector nVec;
+
+	KingsDreamAttractor() {
+		name = "King's Dream";
+		magFactor = 150;
+
+		float[][] rangesABCD = {{-0.5, 1.5}, {-0.5, 1.5}};
+		nVec = new NoiseVector(rangesABCD, 0.005);
+	}
+
+	void reset() {
+		lastPt = new PVector(0.1, 0.1);
+	}
+
+	void update() {
+		float[] update = nVec.getNext();
+		PVector relMouseXY = util.getRelMouseXY();
+		pA = lerp(-3, 3, relMouseXY.x);
+		pB = update[0];
+		pC = lerp(-3, 3, relMouseXY.y);
+		pD = update[1];
+	}
+
+	PVector getNext() {
+		float x = sin(pA * lastPt.y) + pB * sin(pA * lastPt.x);
+		float y = sin(pC * lastPt.x) + pD * sin(pC * lastPt.y);
+		return new PVector(x, y);
+	}
+
+	String[] getParamsDisplay() {
+		String[] paramsDisp = {"A: "+util.roundTo(pA, 4), "B: "+util.roundTo(pB, 4), "C: "+util.roundTo(pC, 4), "D: "+util.roundTo(pD, 4)};
+		return paramsDisp;
+	}
+
+	void updateParam(int num, float inc) {
+		switch (num) {
+			case 0: pA += inc; break;
+			case 1: pB += inc; break;
+			case 2: pC += inc; break;
+			case 3: pD += inc; break;
 		}
 	}
 }
@@ -300,5 +380,38 @@ class PickoverAttractor extends Attractor {
 			case 2: pC += inc; break;
 			case 3: pD += inc; break;
 		}
+	}
+}
+
+// source: http://www.3d-meier.de/tut5/Seite25.html
+class TinkerbellAttractor extends Attractor {
+	float pA = 0.9;
+	float pB = 0.6013;
+	float sP = 1;
+
+	TinkerbellAttractor() {
+		name = "Tinkerbell";
+		magFactor = 300;
+	}
+
+	void reset() {
+		lastPt = new PVector(0.01, 0.01);
+	}
+
+	void update() {
+		PVector relMouseXY = util.getRelMouseXY();
+		pB = lerp(0.2, 0.7, relMouseXY.x);
+		pA = lerp(0.6, 1.2, relMouseXY.y);
+	}
+
+	PVector getNext() {
+		float x = sP * pow(lastPt.x, 2) - pow(lastPt.y, 2) + pA * lastPt.x + pB * lastPt.y;
+		float y = sP * 2 * lastPt.x * lastPt.y - 2 * lastPt.x + 0.5 * lastPt.y;
+		return new PVector(x, y);
+	}
+
+	String[] getParamsDisplay() {
+		String[] paramsDisp = {"A: "+util.roundTo(pA, 4), "B: "+util.roundTo(pB, 4)};
+		return paramsDisp;
 	}
 }
