@@ -1,3 +1,63 @@
+// source: http://alteredqualia.com/attractor
+class AlteredQualiaAttractor extends Attractor {
+	float pA;
+	float pB;
+	float pC;
+	float pD;
+	float pE;
+	float pF;
+	float pG;
+	float pH;
+	NoiseVector nVec;
+
+	AlteredQualiaAttractor() {
+		name = "Altered Qualia";
+		magFactor = 120;
+
+		float[][] ranges = {
+			{-2, 2},
+			{-2, 2},
+			{-2, 2},
+			{0.1, 2},
+			{-2, 2},
+			{-2, 2},
+			{-2, 2},
+			{0.1, 2}
+		};
+		nVec = new NoiseVector(ranges, 0.3);
+	}
+
+	void update() {
+		PVector relMouseXY = util.getRelMouseXY();
+
+		float[] update = nVec.getNext();
+		pA = random(-2, 2);  //update[0];
+		pB = random(-2, 2);  //update[1];
+		pC = random(-2, 2);  //update[2];
+		pD = random(0.1, 2); //update[3];
+		pE = random(-2, 2);  //update[4];
+		pF = random(-2, 2);  //update[5];
+		pG = random(-2, 2);  //update[6];
+		pH = random(0.1, 2); //update[7];
+	}
+
+	void reset() {
+		lastPt = new PVector(0, 0);
+	}
+
+	PVector getNext() {
+		float x = pA * sin(pB * lastPt.y) + pC * cos(pD * lastPt.x);
+		float y = pE * sin(pF * lastPt.x) + pG * cos(pH * lastPt.y);
+		return new PVector(x, y);
+	}
+
+	String[] getParamsDisplay() {
+		String[] paramsDisp = {"A: "+util.roundTo(pA, 4), "B: "+util.roundTo(pB, 4), "C: "+util.roundTo(pC, 4), "D: "+util.roundTo(pD, 4), "E: "+util.roundTo(pE, 4), "F: "+util.roundTo(pF, 4), "G: "+util.roundTo(pG, 4), "H: "+util.roundTo(pH, 4)};
+		return paramsDisp;
+	}
+}
+
+
 // source: http://paulbourke.net/fractals/clifford/
 class CliffordAttractor extends Attractor {
 	float pA = -1.4;
