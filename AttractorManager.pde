@@ -9,15 +9,17 @@ class AttractorManager {
 
 	void update() {
 		mainAttractor.update();
+		mainAttractor.genPts();
+	}
+
+	void updateAttractorParam(int paramNum, float inc) {
+		mainAttractor.updateParam(paramNum, inc);
+		mainAttractor.genPts();
 	}
 
 	void draw() {
 		mainAttractor.draw();
 		mainAttractor.drawParams();
-	}
-
-	void updateAttractorParam(int paramNum, float inc) {
-		mainAttractor.updateParam(paramNum, inc);
 	}
 
 	void saveFrame() {

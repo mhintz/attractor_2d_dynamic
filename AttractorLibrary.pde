@@ -8,8 +8,7 @@ class CliffordAttractor extends Attractor {
 
 	CliffordAttractor() {
 		name = "Clifford";
-		lastPt = new PVector(0.1, 0.1);
-		magFactor = 175;
+		magFactor = 150;
 
 		float[][] rangesCandD = {{-5, 5}, {-5, 5}};
 		nVec = new NoiseVector(rangesCandD, 0.005);
@@ -21,6 +20,10 @@ class CliffordAttractor extends Attractor {
 		return new PVector(x, y);
 	}
 
+	void reset() {
+		lastPt = new PVector(0.1, 0.1);
+	}
+
 	void update() {
 		float[] update = nVec.getNext();
 		PVector relMouseXY = util.getRelMouseXY();
@@ -28,7 +31,6 @@ class CliffordAttractor extends Attractor {
 		pB = lerp(-5, 5, relMouseXY.y);
 		pC = update[0];
 		pD = update[1];
-		genPts();
 	}
 
 	String[] getParamsDisplay() {
@@ -41,7 +43,6 @@ class CliffordAttractor extends Attractor {
 			case 0: pA += inc; break;
 			case 1: pB += inc; break;
 		}
-		genPts();
 	}
 }
 
@@ -57,37 +58,30 @@ class DuffingAttractor extends Attractor {
 
 	DuffingAttractor() {
 		name = "Duffing";
-		lastPt = new PVector(0.1, 0.1);
-		magFactor = 1000;
+		magFactor = 100;
+	}
 
+	void reset() {
 		time = 0;
+		lastPt = new PVector(0.1, 0.1);
 	}
 
 	void update() {
-		/*PVector relMouseXY = util.getRelMouseXY();
+		PVector relMouseXY = util.getRelMouseXY();
 		pA = lerp(0, 1, relMouseXY.x);
 		pB = lerp(0, 1, relMouseXY.y);
-		genPts();*/
+	}
+
+	PVector getNext() {
+		float x = lastPt.x + sP * lastPt.y;
+		float y = lastPt.y + sP * (lastPt.x - pow(lastPt.x, 3) - pA * lastPt.y + pB * cos(pC * time));
+		time += sP;
+		return new PVector(x, y);
 	}
 
 	String[] getParamsDisplay() {
 		String[] paramsDisp = {"A: "+util.roundTo(pA, 4), "B: "+util.roundTo(pB, 4), "C: "+util.roundTo(pC, 4)};
 		return paramsDisp;
-	}
-
-	void genPts() {
-		time = 0;
-		super.genPts();
-		if (Float.isNaN(pts[pts.length - 1].pos.x) || Float.isNaN(pts[pts.length - 1].pos.y)) {
-			println("genpts went infinite");
-		}
-	}
-
-	PVector getNext() {
-		float x = lastPt.x + sP * lastPt.y;
-		float y = lastPt.y + sP * lastPt.x - pow(lastPt.x, 3) - pA * lastPt.y + pB * cos(pC * time);
-		time += sP;
-		return new PVector(x, y);
 	}
 
 	void updateParam(int num, float inc) {
@@ -96,7 +90,6 @@ class DuffingAttractor extends Attractor {
 			case 1: pB += inc; break;
 			case 2: pC += inc; break;
 		}
-		genPts();
 	}
 }
 
@@ -110,11 +103,14 @@ class PeterDeJongAttractor extends Attractor {
 
 	PeterDeJongAttractor() {
 		name = "Peter De Jong";
-		lastPt = new PVector(0.1, 0.1);
 		magFactor = 200;
 
 		float[][] rangesAandBandCandD = {{-5, 5}, {-5, 5}};
 		nVec = new NoiseVector(rangesAandBandCandD, 0.005);
+	}
+
+	void reset() {
+		lastPt = new PVector(0.1, 0.1);
 	}
 
 	void update() {
@@ -124,7 +120,6 @@ class PeterDeJongAttractor extends Attractor {
 		pB = lerp(-5, 5, relMouseXY.x);
 		pC = update[1];
 		pD = lerp(-5, 5, relMouseXY.y);
-		genPts();
 	}
 
 	String[] getParamsDisplay() {
@@ -145,7 +140,6 @@ class PeterDeJongAttractor extends Attractor {
 			case 2: pC += inc; break;
 			case 3: pD += inc; break;
 		}
-		genPts();
 	}
 }
 
@@ -159,11 +153,14 @@ class PhillipHamAttractor extends Attractor {
 
 	PhillipHamAttractor() {
 		name = "Phillip Ham";
-		lastPt = new PVector(1, 1);
 		magFactor = 200;
 
 		float[][] rangesAandB = {{0, 1}, {0, 1}};
 		nVec = new NoiseVector(rangesAandB, 0.005);
+	}
+
+	void reset() {
+		lastPt = new PVector(1, 1);
 	}
 
 	void update() {
@@ -172,7 +169,6 @@ class PhillipHamAttractor extends Attractor {
 		pA = update[0];
 		pB = update[1];
 		pC = lerp(1, 3, relMouseXY.x);
-		genPts();
 	}
 
 	PVector getNext() {
@@ -192,7 +188,6 @@ class PhillipHamAttractor extends Attractor {
 			case 1: pB += inc; break;
 			case 2: pC += inc; break;
 		}
-		genPts();
 	}
 }
 
@@ -206,12 +201,15 @@ class PickoverAttractor extends Attractor {
 
 	PickoverAttractor() {
 		name = "Pickover";
-		lastPt = new PVector(0, 0, 0);
 		magFactor = 350;
 		adjY = 250;
 
 		float[][] rangesBandC = {{-3, 3}, {0, 15}};
 		nVec = new NoiseVector(rangesBandC, 0.005);
+	}
+
+	void reset() {
+		lastPt = new PVector(0, 0, 0);
 	}
 
 	void update() {
@@ -221,7 +219,6 @@ class PickoverAttractor extends Attractor {
 		pB = update[0];
 		pC = update[1];
 		pD = lerp(-5, 5, relMouseXY.y);
-		genPts();
 	}
 
 	PVector getNext() {
@@ -243,6 +240,5 @@ class PickoverAttractor extends Attractor {
 			case 2: pC += inc; break;
 			case 3: pD += inc; break;
 		}
-		genPts();
 	}
 }

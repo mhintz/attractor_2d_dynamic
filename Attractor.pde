@@ -35,7 +35,13 @@ class Attractor {
 		}
 	}
 
+	// resets initial conditions
+	void reset() {
+		lastPt = new PVector(0, 0, 0);
+	}
+
 	void genPts() {
+		reset();
 		AttractorPt extPt;
 		PVector newPos;
 		color newColor;
