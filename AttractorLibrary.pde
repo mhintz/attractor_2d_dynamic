@@ -184,6 +184,7 @@ class HenonAttractor extends Attractor {
 	}
 }
 
+// source: http://softology.com.au/tutorials/attractors2d/tutorial.htm
 class KingsDreamAttractor extends Attractor {
 	float pA = 1.4;
 	float pB = 1.4;
