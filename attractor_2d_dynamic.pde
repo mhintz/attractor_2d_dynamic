@@ -9,11 +9,12 @@ ControlP5 cp5;
 DropdownList attractorList;
 
 int COLOR_MAX = 360;
+int SAT_MAX = 100;
+int BRIGHT_MAX = 100;
+int ALPHA_MAX = 1;
 
 void setup() {
-	size(displayWidth, displayHeight, P3D);
-	colorMode(HSB, COLOR_MAX, 100, 100, 1);
-//	size(500, 500, P3D);
+	colorMode(HSB, COLOR_MAX, SAT_MAX, BRIGHT_MAX, ALPHA_MAX);
 
 	util = new MathUtil();
 
@@ -25,6 +26,20 @@ void setup() {
 
 	// optional initial attractor
 	attractorList.setIndex(0);
+}
+
+int sketchWidth() {
+	return displayWidth;
+//	return 500;
+}
+
+int sketchHeight() {
+	return displayHeight;
+//	return 500;
+}
+
+String sketchRenderer() {
+	return P3D;
 }
 
 boolean sketchFullScreen() {
