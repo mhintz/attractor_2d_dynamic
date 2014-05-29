@@ -149,20 +149,20 @@ class CliffordAttractor2 extends Attractor {
 // source: http://paulbourke.net/fractals/duffing/
 // source: http://www.3d-meier.de/tut5a/Seite41.html
 class DuffingAttractor extends Attractor {
-	float pA = 0.25;
+	float pA = 0.2;
 	float pB = 0.3;
 	float pC = 1;
-	float sP = 0.01;
-	int time;
+	float sP = 0.04;
+	float time = 0;
 
 	DuffingAttractor() {
 		name = "Duffing";
-		magFactor = 100;
+		magFactor = 250;
 	}
 
 	void reset() {
 		time = 0;
-		lastPt = new PVector(0.1, 0.1);
+		lastPt = new PVector(0, 0);
 	}
 
 	void update() {

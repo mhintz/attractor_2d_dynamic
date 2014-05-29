@@ -1,8 +1,10 @@
 class AttractorPt {
 	PVector pos;
 	color col;
+	float dist;
 
 	AttractorPt(PVector p, color c) {
+		dist = 0;
 		pos = p;
 		col = c;
 	}
@@ -42,17 +44,21 @@ class Attractor {
 
 	void genPts() {
 		reset();
+
+		float maxDist = 0.1;
 		AttractorPt extPt;
-		PVector oldPos;
-		PVector newPos;
-		color newColor;
 		for (int i = 0; i < pts.length; ++i) {
 			extPt = pts[i];
-			oldPos = lastPt;
-			newPos = nextPt();
-			newColor = util.getColorFromDist(newPos.dist(oldPos));
-			extPt.col = newColor;
+			PVector oldPos = lastPt;
+			PVector newPos = nextPt();
+			float dist = newPos.dist(oldPos);
+			if (!Float.isInfinite(dist)) maxDist = Math.max(dist, maxDist);
+			extPt.dist = dist;
 			extPt.pos.set(newPos);
+		}
+		for (int i = 0, l = pts.length; i < l; ++i) {
+			extPt = pts[i];
+			extPt.col = util.getColorFromDist(extPt.dist, maxDist);
 		}
 	}
 

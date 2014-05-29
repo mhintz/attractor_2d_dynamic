@@ -30,8 +30,8 @@ class MathUtil {
 	color colorScale0 = color(0, 100, 100);
 	color colorScale1 = color(270, 100, 100);
 
-	color getColorFromDist(float dist) {
-		return lerpColor(colorScale0, colorScale1, 1 - (dist / 3));
+	color getColorFromDist(float dist, float max) {
+		return lerpColor(colorScale0, colorScale1, 1 - (dist / max));
 	}
 }
 
