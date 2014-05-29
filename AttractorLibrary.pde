@@ -1,62 +1,102 @@
-// source: http://alteredqualia.com/attractor
-class AlteredQualiaAttractor extends Attractor {
-	float pA;
-	float pB;
-	float pC;
-	float pD;
-	float pE;
-	float pF;
-	float pG;
-	float pH;
+/* Four-parameter 2d trigonometric attractors */
+
+// source: http://softology.com.au/tutorials/attractors2d/tutorial.htm
+class KingsDreamAttractor extends Attractor {
+	float pA = 1.4;
+	float pB = 1.4;
+	float pC = 1.4;
+	float pD = 1.4;
 	NoiseVector nVec;
 
-	AlteredQualiaAttractor() {
-		name = "Altered Qualia";
-		magFactor = 120;
+	KingsDreamAttractor() {
+		name = "King's Dream";
+		magFactor = 200;
 
-		float[][] ranges = {
-			{-2, 2},
-			{-2, 2},
-			{-2, 2},
-			{0.1, 2},
-			{-2, 2},
-			{-2, 2},
-			{-2, 2},
-			{0.1, 2}
-		};
-		nVec = new NoiseVector(ranges, 0.3);
-	}
-
-	void update() {
-		PVector relMouseXY = util.getRelMouseXY();
-
-		float[] update = nVec.getNext();
-		pA = random(-2, 2);  //update[0];
-		pB = random(-2, 2);  //update[1];
-		pC = random(-2, 2);  //update[2];
-		pD = random(0.1, 2); //update[3];
-		pE = random(-2, 2);  //update[4];
-		pF = random(-2, 2);  //update[5];
-		pG = random(-2, 2);  //update[6];
-		pH = random(0.1, 2); //update[7];
+		float[][] rangesABCD = {{-0.5, 1.5}, {-0.5, 1.5}};
+		nVec = new NoiseVector(rangesABCD, 0.005);
 	}
 
 	void reset() {
-		lastPt = new PVector(0, 0);
+		lastPt = new PVector(0.1, 0.1);
+	}
+
+	void update() {
+		float[] update = nVec.getNext();
+		PVector relMouseXY = util.getRelMouseXY();
+		pA = lerp(-3, 3, relMouseXY.x);
+		pB = update[0];
+		pC = lerp(-3, 3, relMouseXY.y);
+		pD = update[1];
 	}
 
 	PVector getNext() {
-		float x = pA * sin(pB * lastPt.y) + pC * cos(pD * lastPt.x);
-		float y = pE * sin(pF * lastPt.x) + pG * cos(pH * lastPt.y);
+		float x = sin(pA * lastPt.y) + pB * sin(pA * lastPt.x);
+		float y = sin(pC * lastPt.x) + pD * sin(pC * lastPt.y);
 		return new PVector(x, y);
 	}
 
 	String[] getParamsDisplay() {
-		String[] paramsDisp = {"A: "+util.roundTo(pA, 4), "B: "+util.roundTo(pB, 4), "C: "+util.roundTo(pC, 4), "D: "+util.roundTo(pD, 4), "E: "+util.roundTo(pE, 4), "F: "+util.roundTo(pF, 4), "G: "+util.roundTo(pG, 4), "H: "+util.roundTo(pH, 4)};
+		String[] paramsDisp = {"A: "+util.roundTo(pA, 4), "B: "+util.roundTo(pB, 4), "C: "+util.roundTo(pC, 4), "D: "+util.roundTo(pD, 4)};
 		return paramsDisp;
+	}
+
+	void updateParam(int num, float inc) {
+		switch (num) {
+			case 0: pA += inc; break;
+			case 1: pB += inc; break;
+			case 2: pC += inc; break;
+			case 3: pD += inc; break;
+		}
 	}
 }
 
+// source: http://softology.com.au/tutorials/attractors2d/tutorial.htm
+class CosCosCosCosAttractor extends Attractor {
+	float pA = -1.4;
+	float pB = 1.4;
+	float pC = 1.4;
+	float pD = 1.4;
+	NoiseVector nVec;
+
+	CosCosCosCosAttractor() {
+		name = "4 Cosine Attractor";
+		magFactor = 150;
+
+		float[][] rangesCandD = {{-5, 5}, {-5, 5}};
+		nVec = new NoiseVector(rangesCandD, 0.005);
+	}
+
+	PVector getNext() {
+		float x = cos(pA * lastPt.y) + pB * cos(pA * lastPt.x);
+		float y = cos(pC * lastPt.x) + pD * cos(pC * lastPt.y);
+		return new PVector(x, y);
+	}
+
+	void reset() {
+		lastPt = new PVector(0.1, 0.1);
+	}
+
+	void update() {
+		float[] update = nVec.getNext();
+		PVector relMouseXY = util.getRelMouseXY();
+		pA = lerp(-5, 5, relMouseXY.x);
+		pB = update[0];
+		pC = lerp(-5, 5, relMouseXY.y);
+		pD = update[1];
+	}
+
+	String[] getParamsDisplay() {
+		String[] paramsDisp = {"A: "+util.roundTo(pA, 4), "B: "+util.roundTo(pB, 4), "C: "+util.roundTo(pC, 4), "D: "+util.roundTo(pD, 4)};
+		return paramsDisp;
+	}
+
+	void updateParam(int num, float inc) {
+		switch (num) {
+			case 0: pA += inc; break;
+			case 1: pB += inc; break;
+		}
+	}
+}
 
 // source: http://paulbourke.net/fractals/clifford/
 class CliffordAttractor extends Attractor {
@@ -68,7 +108,7 @@ class CliffordAttractor extends Attractor {
 
 	CliffordAttractor() {
 		name = "Clifford";
-		magFactor = 150;
+		magFactor = 200;
 
 		float[][] rangesCandD = {{-5, 5}, {-5, 5}};
 		nVec = new NoiseVector(rangesCandD, 0.005);
@@ -142,6 +182,117 @@ class CliffordAttractor2 extends Attractor {
 
 	String[] getParamsDisplay() {
 		String[] paramsDisp = {"A: "+util.roundTo(pA, 4), "B: "+util.roundTo(pB, 4), "C: "+util.roundTo(pC, 4), "D: "+util.roundTo(pD, 4)};
+		return paramsDisp;
+	}
+}
+
+// source: http://paulbourke.net/fractals/peterdejong/
+class PeterDeJongAttractor extends Attractor {
+	float pA = 1.4;
+	float pB = -2.3;
+	float pC = 2.4;
+	float pD = -2.1;
+	NoiseVector nVec;
+
+	PeterDeJongAttractor() {
+		name = "Peter De Jong";
+		magFactor = 200;
+
+		float[][] rangesAandBandCandD = {{-5, 5}, {-5, 5}};
+		nVec = new NoiseVector(rangesAandBandCandD, 0.005);
+	}
+
+	void reset() {
+		lastPt = new PVector(0.1, 0.1);
+	}
+
+	void update() {
+		float[] update = nVec.getNext();
+		PVector relMouseXY = util.getRelMouseXY();
+		pA = update[0];
+		pB = lerp(-5, 5, relMouseXY.x);
+		pC = update[1];
+		pD = lerp(-5, 5, relMouseXY.y);
+	}
+
+	String[] getParamsDisplay() {
+		String[] paramsDisp = {"A: "+util.roundTo(pA, 4), "B: "+util.roundTo(pB, 4), "C: "+util.roundTo(pC, 4), "D: "+util.roundTo(pD, 4)};
+		return paramsDisp;
+	}
+
+	PVector getNext() {
+		float x = sin(pA * lastPt.y) - cos(pB * lastPt.x);
+		float y = sin(pC * lastPt.x) - cos(pD * lastPt.y);
+		return new PVector(x, y);
+	}
+
+	void updateParam(int num, float inc) {
+		switch (num) {
+			case 0: pA += inc; break;
+			case 1: pB += inc; break;
+			case 2: pC += inc; break;
+			case 3: pD += inc; break;
+		}
+	}
+}
+
+/* Other Attractors */
+
+// source: http://alteredqualia.com/attractor
+class AlteredQualiaAttractor extends Attractor {
+	float pA;
+	float pB;
+	float pC;
+	float pD;
+	float pE;
+	float pF;
+	float pG;
+	float pH;
+	NoiseVector nVec;
+
+	AlteredQualiaAttractor() {
+		name = "Altered Qualia";
+		magFactor = 120;
+
+		float[][] ranges = {
+			{-2, 2},
+			{-2, 2},
+			{-2, 2},
+			{0.1, 2},
+			{-2, 2},
+			{-2, 2},
+			{-2, 2},
+			{0.1, 2}
+		};
+		nVec = new NoiseVector(ranges, 0.3);
+	}
+
+	void update() {
+		PVector relMouseXY = util.getRelMouseXY();
+
+		float[] update = nVec.getNext();
+		pA = random(-2, 2);  //update[0];
+		pB = random(-2, 2);  //update[1];
+		pC = random(-2, 2);  //update[2];
+		pD = random(0.1, 2); //update[3];
+		pE = random(-2, 2);  //update[4];
+		pF = random(-2, 2);  //update[5];
+		pG = random(-2, 2);  //update[6];
+		pH = random(0.1, 2); //update[7];
+	}
+
+	void reset() {
+		lastPt = new PVector(0, 0);
+	}
+
+	PVector getNext() {
+		float x = pA * sin(pB * lastPt.y) + pC * cos(pD * lastPt.x);
+		float y = pE * sin(pF * lastPt.x) + pG * cos(pH * lastPt.y);
+		return new PVector(x, y);
+	}
+
+	String[] getParamsDisplay() {
+		String[] paramsDisp = {"A: "+util.roundTo(pA, 4), "B: "+util.roundTo(pB, 4), "C: "+util.roundTo(pC, 4), "D: "+util.roundTo(pD, 4), "E: "+util.roundTo(pE, 4), "F: "+util.roundTo(pF, 4), "G: "+util.roundTo(pG, 4), "H: "+util.roundTo(pH, 4)};
 		return paramsDisp;
 	}
 }
@@ -221,106 +372,6 @@ class HenonAttractor extends Attractor {
 		float x = 1 + lastPt.y - pA * pow(lastPt.x, 2);
 		float y = pB * lastPt.x;
 		return new PVector(x, y);
-	}
-}
-
-// source: http://softology.com.au/tutorials/attractors2d/tutorial.htm
-class KingsDreamAttractor extends Attractor {
-	float pA = 1.4;
-	float pB = 1.4;
-	float pC = 1.4;
-	float pD = 1.4;
-	NoiseVector nVec;
-
-	KingsDreamAttractor() {
-		name = "King's Dream";
-		magFactor = 150;
-
-		float[][] rangesABCD = {{-0.5, 1.5}, {-0.5, 1.5}};
-		nVec = new NoiseVector(rangesABCD, 0.005);
-	}
-
-	void reset() {
-		lastPt = new PVector(0.1, 0.1);
-	}
-
-	void update() {
-		float[] update = nVec.getNext();
-		PVector relMouseXY = util.getRelMouseXY();
-		pA = lerp(-3, 3, relMouseXY.x);
-		pB = update[0];
-		pC = lerp(-3, 3, relMouseXY.y);
-		pD = update[1];
-	}
-
-	PVector getNext() {
-		float x = sin(pA * lastPt.y) + pB * sin(pA * lastPt.x);
-		float y = sin(pC * lastPt.x) + pD * sin(pC * lastPt.y);
-		return new PVector(x, y);
-	}
-
-	String[] getParamsDisplay() {
-		String[] paramsDisp = {"A: "+util.roundTo(pA, 4), "B: "+util.roundTo(pB, 4), "C: "+util.roundTo(pC, 4), "D: "+util.roundTo(pD, 4)};
-		return paramsDisp;
-	}
-
-	void updateParam(int num, float inc) {
-		switch (num) {
-			case 0: pA += inc; break;
-			case 1: pB += inc; break;
-			case 2: pC += inc; break;
-			case 3: pD += inc; break;
-		}
-	}
-}
-
-// source: http://paulbourke.net/fractals/peterdejong/
-class PeterDeJongAttractor extends Attractor {
-	float pA = 1.4;
-	float pB = -2.3;
-	float pC = 2.4;
-	float pD = -2.1;
-	NoiseVector nVec;
-
-	PeterDeJongAttractor() {
-		name = "Peter De Jong";
-		magFactor = 200;
-
-		float[][] rangesAandBandCandD = {{-5, 5}, {-5, 5}};
-		nVec = new NoiseVector(rangesAandBandCandD, 0.005);
-	}
-
-	void reset() {
-		lastPt = new PVector(0.1, 0.1);
-	}
-
-	void update() {
-		float[] update = nVec.getNext();
-		PVector relMouseXY = util.getRelMouseXY();
-		pA = update[0];
-		pB = lerp(-5, 5, relMouseXY.x);
-		pC = update[1];
-		pD = lerp(-5, 5, relMouseXY.y);
-	}
-
-	String[] getParamsDisplay() {
-		String[] paramsDisp = {"A: "+util.roundTo(pA, 4), "B: "+util.roundTo(pB, 4), "C: "+util.roundTo(pC, 4), "D: "+util.roundTo(pD, 4)};
-		return paramsDisp;
-	}
-
-	PVector getNext() {
-		float x = sin(pA * lastPt.y) - cos(pB * lastPt.x);
-		float y = sin(pC * lastPt.x) - cos(pD * lastPt.y);
-		return new PVector(x, y);
-	}
-
-	void updateParam(int num, float inc) {
-		switch (num) {
-			case 0: pA += inc; break;
-			case 1: pB += inc; break;
-			case 2: pC += inc; break;
-			case 3: pD += inc; break;
-		}
 	}
 }
 
